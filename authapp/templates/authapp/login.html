@@ -8,22 +8,25 @@
                         <h3>Login</h3>
         <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
             {% csrf_token %}
-
             {{ login_form.as_p }}
             <br>
             <input class="form-control" type="submit" value="войти">
 
         </form>
-        <button class="form-control">
-        <a href="{% url 'auth:register' %}" class="">
+
+        <a href="{% url 'auth:register' %}" class="link">
+            <button class="form-control">
             Регистрация
+            </button>
         </a>
-        </button>
-        <button class="form-control">
-        <a href="{% url 'index' %}" class="">
+
+
+        <a href="{% url 'index' %}" class="link">
+            <button class="form-control">
             На главную
+            </button>
         </a>
-        </button>
+
     </div>
 {% endblock %}
 

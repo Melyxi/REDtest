@@ -97,7 +97,18 @@ p {
     margin-bottom: 10px;
 
 }
+.errorlist{
+    list-style-type: none;
+}
+
+
+.link{
+    text-decoration: none;
+    color: black;
+}
+
 .form-control {
+    list-style-type: none;
     margin-top: 10px;
     width: 300px;
     margin: 0 auto;

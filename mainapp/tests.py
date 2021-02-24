@@ -9,11 +9,11 @@ class TestMainappSmoke(TestCase):
         call_command('flush', '--noinput')
         self.client = Client()
 
-        self.superuser = User.objects.create_superuser(username='developer', password='developer')
+        self.superuser = User.objects.create_superuser(username='developer', email='12@r.ru', password='developer')
 
-        self.user = User.objects.create_user(username='admin', password='123test123', role='ADMIN')
+        self.user = User.objects.create_user(username='admin', email='121@r.ru', password='123test123', role='ADMIN')
 
-        self.user = User.objects.create_user(username='user', password='123test123', role='USER')
+        self.user = User.objects.create_user(username='user', email='1213@r.ru', password='123test123', role='USER')
 
     def test_mainapp_urls(self):
         # тест для гостя

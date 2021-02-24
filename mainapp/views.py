@@ -1,10 +1,10 @@
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect,  reverse
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseNotFound
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView
-from authapp.forms import EditFormUser, EditFormAdmin, EditFormDev
+from authapp.forms import EditFormAdmin, EditFormDev
 from authapp.models import User
 
 
@@ -12,7 +12,7 @@ def main(request):
     return render(request, 'mainapp/index.html')
 
 
-#@user_passes_test(lambda u: u.is_superuser)
+# @user_passes_test(lambda u: u.is_superuser)
 def dev(request):
     if not request.user.is_anonymous:
         if request.user.is_superuser:
@@ -29,8 +29,7 @@ def dev(request):
         return HttpResponseNotFound('<h1> Page not found</h1>')
 
 
-
-#@user_passes_test(lambda u: u.is_superuser or u.role == 'ADMIN' if not u.is_anonymous else False)
+# @user_passes_test(lambda u: u.is_superuser or u.role == 'ADMIN' if not u.is_anonymous else False)
 def admin(request):
     if not request.user.is_anonymous:
         if request.user.role == 'ADMIN' or request.user.is_superuser:
@@ -47,9 +46,8 @@ def admin(request):
         return HttpResponseNotFound('<h1> Page not found</h1>')
 
 
-#@user_passes_test(lambda u: u.is_superuser or (u.role == 'ADMIN' if not u.is_anonymous else False) or (
-#u.role == 'USER' if not u.is_anonymous else False))
-
+# @user_passes_test(lambda u: u.is_superuser or (u.role == 'ADMIN' if not u.is_anonymous else False) or (
+# u.role == 'USER' if not u.is_anonymous else False))
 def user(request):
     if not request.user.is_anonymous:
         if request.user.role == 'ADMIN' or request.user.role == 'USER' or request.user.is_superuser:
@@ -67,15 +65,11 @@ def user(request):
         return HttpResponseNotFound('<h1> Page not found</h1>')
 
 
-
-
 class AdminUpdateView(UpdateView):
     model = User
     template_name = 'authapp/edit.html'
     success_url = reverse_lazy('main:admin')
-    # fields = '__all__'
     form_class = EditFormAdmin
-
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser or u.role == 'ADMIN'))
     def dispatch(self, *args, **kwargs):
@@ -86,16 +80,12 @@ class AdminUpdateView(UpdateView):
         return qs.exclude(is_superuser=True)
 
 
-
 class DevUpdateView(UpdateView):
     model = User
     template_name = 'authapp/edit.html'
     success_url = reverse_lazy('main:dev')
-    # fields = '__all__'
     form_class = EditFormDev
-
 
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
-

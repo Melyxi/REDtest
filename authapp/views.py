@@ -1,18 +1,11 @@
-from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.utils.decorators import method_decorator
-from django.views.generic import UpdateView
-
-from authapp.forms import UserForm, RegisterForm
 from django.contrib import auth
-from django.urls import reverse, reverse_lazy
-from authapp.models import User
+from django.urls import reverse
 from authapp.forms import *
 
 
 def login(request):
-
     login_form = UserForm(data=request.POST)
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
@@ -26,6 +19,7 @@ def login(request):
     content = {'login_form': login_form}
     return render(request, 'authapp/login.html', content)
 
+
 def register(request):
     if request.method == 'POST':
         register_form = RegisterForm(request.POST, request.FILES)
@@ -37,8 +31,6 @@ def register(request):
 
     content = {'register_form': register_form}
     return render(request, 'authapp/register.html', content)
-
-
 
 
 def logout(request):
@@ -57,6 +49,3 @@ def edit(request):
 
     content = {'form': edit_form}
     return render(request, 'authapp/edit.html', content)
-
-
-

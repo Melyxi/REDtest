@@ -3,14 +3,14 @@
 
 
 {% block content %}
-  <form class="form-horizontal" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input class="form-control" type="submit" value="сохранить">
-  </form>
+<form class="form-horizontal" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="form-control" type="submit" value="сохранить">
+</form>
+      <a href="{% url 'main:user' %}" class="link">
   <button class="form-control">
-      <a href="{% url 'main:user' %}">
               назад
-      </a>
   </button>
+    </a>
 {% endblock %}

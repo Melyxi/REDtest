@@ -1,9 +1,8 @@
 from django.contrib.auth.forms import (AuthenticationForm,
                                        UserCreationForm,
-                                       forms,
-                                       UserChangeForm)
-#from django.contrib.auth.models import User
+                                       UserChangeForm, forms)
 from authapp.models import User
+
 
 class UserForm(AuthenticationForm):
     class Meta:
@@ -13,7 +12,9 @@ class UserForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
+            field.error_messages['required'] = ''
             field.widget.attrs['class'] = 'form-control'
+
 
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -25,6 +26,7 @@ class RegisterForm(UserCreationForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
+
 
 class EditFormUser(UserChangeForm):
     class Meta:
@@ -39,10 +41,29 @@ class EditFormUser(UserChangeForm):
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
 
+
 class EditFormAdmin(UserChangeForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'email', 'role')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if field_name == 'role':
+                field.widget.choices = field.widget.choices[:-1]
+
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+            if field_name == 'password':
+                field.widget = forms.HiddenInput()
+
+
+class EditFormDev(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'email', 'role',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -51,20 +72,3 @@ class EditFormAdmin(UserChangeForm):
             field.help_text = ''
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
-
-class EditFormDev(UserChangeForm):
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'email', 'role', 'is_superuser')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            if field_name == 'is_superuser':
-                field.widget.attrs['class'] = ''
-                field.help_text = ''
-            else:
-                field.widget.attrs['class'] = 'form-control'
-                field.help_text = ''
-                if field_name == 'password':
-                    field.widget = forms.HiddenInput()
