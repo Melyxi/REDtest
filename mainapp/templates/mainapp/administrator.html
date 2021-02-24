@@ -1,0 +1,28 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="content">
+        <p>
+            Администратор
+        </p>
+
+       <div class="col-md-6 form-admin bottom-admin">
+        <p> Пользователи </p>
+            {% for user in users%}
+                <div class="content-user">
+                    {{ user.username }} <a href="{% url 'main:editadmin' user.id %}">Редактировать</a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-6 form-admin">
+        <p> Администраторы </p>
+            {% for admin in administrators %}
+                <div class="content-user">
+                    {{ admin.username }} <a href="{% url 'main:editadmin' admin.id %}">Редактировать</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

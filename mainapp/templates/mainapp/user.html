@@ -1,0 +1,20 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="content">
+        <div class="col-md-6 form-admin bottom-admin">
+          <p>
+                Пользователь
+            </p>
+            <p> Имя пользователя: {{ user.username}}</p>
+            <p> Роль пользователя:  {{ user.role}}</p>
+            <button class="form-control">
+                <a href="{% url 'auth:edit' %}">
+                  редактировать
+                </a>
+            </button>
+        </div>
+
+    </div>
+{% endblock %}
