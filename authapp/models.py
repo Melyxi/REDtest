@@ -26,6 +26,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, email, password, **extra_fields):  # создаем суперпользователя с ролью разработчика
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('role', 'DEV')
+        extra_fields.setdefault('is_staff', True)
 
         if extra_fields.get('role') is not 'DEV':
             raise ValueError('Superuser must have is_superuser="DEV"')
@@ -53,7 +54,17 @@ class User(AbstractUser):
 
         if self.role == "DEV":
             self.is_superuser = True
+            self.is_staff = True
+            return super(self.__class__, self).save()
+        elif self.role == "ADMIN":
+            self.is_superuser = False
+            self.is_staff = True
             return super(self.__class__, self).save()
         else:
             self.is_superuser = False
+            self.is_staff = False
             return super(self.__class__, self).save()
+
+
+
+
